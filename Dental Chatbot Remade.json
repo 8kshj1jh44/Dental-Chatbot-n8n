@@ -1,0 +1,417 @@
+{
+  "name": "Dental Chatbot Remade",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -208,
+        48
+      ],
+      "id": "59625e14-6c51-4510-9b73-2b36c0b1ba17",
+      "name": "When chat message received",
+      "webhookId": "5c2e98aa-340d-47a5-8a96-139c400e1179"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are the virtual receptionist for NgeePawn.\n\nYour personality is warm, friendly, professional, and welcoming. Speak naturally, as if you were a caring receptionist at a dental clinic. Keep your responses short, conversational, and easy to understand.\n\nYour goal is to help patients book a dental appointment by collecting the following information:\n\n1. First Name\n2. Last Name\n3. Age\n4. Dental Procedure or Dental Concern\n5. Preferred Appointment Date\n6. Preferred Appointment Time\n7. Contact Number\n\nInstructions:\n\n- Greet the patient warmly.\n- Ask only ONE question at a time.\n- Wait for the patient's response before asking the next question.\n- If the patient provides multiple pieces of information in one message, extract them and do not ask for them again.\n- If an answer is unclear, politely ask for clarification.\n- If the patient asks a question unrelated to booking, answer it briefly, then continue collecting the remaining information.\n- Never assume missing information.\n- Be polite and encouraging throughout the conversation.\n- Do not end the conversation until all required information has been collected.\n\nFor the dental procedure, accept both specific procedures and general concerns such as:\n- Dental Check-up\n- Teeth Cleaning\n- Tooth Extraction\n- Dental Filling\n- Root Canal Treatment\n- Braces Consultation\n- Dental Crown\n- Emergency Dental Care\n- Toothache\n- Bleeding Gums\n- Broken Tooth\n- Other dental concerns\n\nWhen asking for the appointment date, ask:\n\"Which date would you prefer for your appointment?\"\n\nIf the patient provides a past date, politely ask them to choose a future date.\n\nWhen asking for the appointment time, ask:\n\"What time would you prefer?\"\n\nWhen collecting the patient's preferred appointment date, always convert it to ISO format (YYYY-MM-DD), but still accept times in formats such as:\n- 9 AM\n- 9:30 AM\n- 14:00\n- 2:00 PM\n\nWhen asking for the contact number:\n- Accept Philippine mobile and landline numbers.\n- If the number appears incomplete or invalid, politely ask the patient to enter it again.\n\nOnce all information has been collected, display this summary:\n\n------------------------------------\nAppointment Request Summary\n\nFirst Name:\nLast Name:\nAge:\nDental Procedure:\nPreferred Appointment Date:\nPreferred Appointment Time:\nContact Number:\n------------------------------------\n\nThen ask:\n\n\"Please review your appointment details. Is everything correct?\n\nReply with:\n✅ Confirm\nor\n✏️ Edit\"\n\nIf the patient chooses Edit, ask which information they would like to change and update only that field.\n\nIf the patient chooses Confirm, respond:\n\n\"Thank you! 😊 Your appointment request has been received. Our clinic will review your preferred schedule and contact you soon to confirm your appointment. We look forward to seeing you. Have a wonderful day!\"\n\nOnce the patient confirms, return the information using the required structured output format.\n \nDo not include greetings, explanations, markdown, or ```json.\n\nUse exactly this format:\n\n{\n  \"first_name\": \"\",\n  \"last_name\": \"\",\n  \"age\": 0,\n  \"procedure\": \"\",\n  \"appointment_date\": \"\",\n  \"appointment_time\": \"\",\n  \"contact_number\": \"\"\n}\n\nDo not invent or assume missing information. If information is missing, ask the patient for it.\n\nDo not invent appointment availability or claim that the appointment is confirmed unless another system explicitly provides that information.\n\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -64,
+        48
+      ],
+      "id": "af1b4c8f-e1c7-43b9-8514-62fd147df105",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        256
+      ],
+      "id": "f71f8c3a-e0ca-4db7-a2d1-d29c515e5eaf",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6aHL7Ju6lvz8IHOQ",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1sQ4P0SHh1jhjMzcLBVhoyOYrE9JF19Mk4p8Jf5UErgg",
+          "mode": "list",
+          "cachedResultName": "Remade Dental Bot ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sQ4P0SHh1jhjMzcLBVhoyOYrE9JF19Mk4p8Jf5UErgg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sQ4P0SHh1jhjMzcLBVhoyOYrE9JF19Mk4p8Jf5UErgg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Summary": "={{ $json.summary }}",
+            "Appointment Date and Time": "={{ $json.start.dateTime }}",
+            "Status": "={{ $json.status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Appointment Date and Time",
+              "displayName": "Appointment Date and Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        32
+      ],
+      "id": "21a52961-a74a-4d9c-92b0-062f692ffb06",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "lB5bSbNAVEojQV5Q",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "franzlyster@gmail.com",
+        "subject": "={{ $json.Summary }}",
+        "emailType": "text",
+        "message": "={{ $json.Summary }} at {{ $json[\"Appointment Date and Time\"] }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Zeeke, your AI Chatbot : )"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1312,
+        32
+      ],
+      "id": "2146e776-7d20-4f9f-bf80-7a301153df73",
+      "name": "Send a message",
+      "webhookId": "777a5dc1-4e7a-47e1-a30d-467607812373",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KcHbtfmYrllq8ywi",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1989081b-a0e3-44e9-98da-7fc22617f772",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "={{ true }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        48
+      ],
+      "id": "15acdc7f-5de3-4d4a-b2e6-5d50bfdc1678",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "d6549d4db9b9437f4208d45ecfdcebdf948a8e9bc83b20f653eb6c97dedddec3@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Dental Workflow"
+        },
+        "timeMin": "={{ DateTime.fromFormat(\n  $json.appointment_date + \" \" + $json.appointment_time,\n  \"yyyy-MM-dd h:mm a\",\n  { zone: \"Asia/Manila\" }\n).toISO() }}",
+        "timeMax": "={{ DateTime.fromFormat(\n  $json.appointment_date + \" \" + $json.appointment_time,\n  \"yyyy-MM-dd h:mm a\",\n  { zone: \"Asia/Manila\" }\n).plus({ hours: 1 }).toISO() }}",
+        "options": {
+          "outputFormat": "availability",
+          "timezone": {
+            "__rl": true,
+            "value": "Asia/Manila",
+            "mode": "list",
+            "cachedResultName": "Asia/Manila"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        48
+      ],
+      "id": "87b45afa-d786-4cec-aaec-ac34daf54476",
+      "name": "Get availability in a calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "l1VVG1s1O9tyaap9",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        288
+      ],
+      "id": "a080f916-1b7e-452a-a318-5641f47455b5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "d6549d4db9b9437f4208d45ecfdcebdf948a8e9bc83b20f653eb6c97dedddec3@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Dental Workflow"
+        },
+        "start": "={{ DateTime.fromFormat(\n  $('Code in JavaScript').item.json.appointment_date + ' ' + $('Code in JavaScript').item.json.appointment_time,\n  'yyyy-MM-dd h:mm a',\n  { zone: 'Asia/Manila' }\n).toISO() }}",
+        "end": "={{ DateTime.fromFormat(\n  $('Code in JavaScript').item.json.appointment_date + ' ' + $('Code in JavaScript').item.json.appointment_time,\n  'yyyy-MM-dd h:mm a',\n  { zone: 'Asia/Manila' }\n).plus({ hours: 1 }).toISO() }}",
+        "additionalFields": {
+          "summary": "={{ \n  $('Code in JavaScript').item.json.first_name \n  + ' ' \n  + $('Code in JavaScript').item.json.last_name \n  + ' - ' \n  + $('Code in JavaScript').item.json.procedure \n}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        32
+      ],
+      "id": "b9684928-835f-4eeb-ba49-367c0dc05a9e",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "l1VVG1s1O9tyaap9",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "message": "I'm sorry, but that appointment slot is already taken. 😊 Could you please choose another date or time?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        208
+      ],
+      "id": "f2562682-b40e-408a-bb4b-220a19e37681",
+      "name": "Chat",
+      "webhookId": "903de8ad-7ef4-46ab-a469-fcc41d69d36e"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.output;\n\nconst jsonMatch = text.match(/\\{[\\s\\S]*\\}/);\n\nif (!jsonMatch) {\n  throw new Error(\"No JSON found in AI Agent output\");\n}\n\nreturn [\n  {\n    json: JSON.parse(jsonMatch[0])\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        48
+      ],
+      "id": "25d84387-bc8f-4faf-911b-28e1daf4b906",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability in a calendar": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Get availability in a calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ad8ed09d-49b8-4edd-8164-43373128ed57",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d47817c96aac052ed41b97e2a2dc5de26e9e1a3574e54409c0794a096ee01ee2"
+  },
+  "nodeGroups": [],
+  "id": "Jt1soOaU7QmXbZUt",
+  "tags": []
+}
