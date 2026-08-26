@@ -1,0 +1,258 @@
+{
+  "name": "Dental - Daily Aftercare & Reviews",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        112
+      ],
+      "id": "9f457f7a-b6b1-4e50-a41e-bba30d0ebed7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "d6549d4db9b9437f4208d45ecfdcebdf948a8e9bc83b20f653eb6c97dedddec3@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Dental Workflow"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.setZone('Asia/Manila').startOf('day').toISO() }}",
+        "timeMax": "={{ $now.setZone('Asia/Manila').endOf('day').toISO() }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        112
+      ],
+      "id": "c276f2d3-1c2c-438f-adb2-9c06d29c35c8",
+      "name": "Get many events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "l1VVG1s1O9tyaap9",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.summary }}",
+                    "rightValue": "Extract",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "28caa281-a2ae-42f0-b243-254912f5f7b9"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "bc94d38e-3e0b-41b4-86e9-4d96dfbc65e9",
+                    "leftValue": "={{ $json.summary }}",
+                    "rightValue": "Cleaning",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        96
+      ],
+      "id": "ae8994e1-3697-41e1-928c-6ed772417a72",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "franzlyster@gmail.com",
+        "subject": "Post-Extraction Care & Instructions - NgeePawn Clinic",
+        "emailType": "text",
+        "message": "Hi there,  Thank you for visiting NgeePawn Dental Clinic today for your extraction. Here are your important aftercare instructions:  1. Keep gentle pressure on the gauze pad for 30–45 minutes. 2. Avoid drinking through a straw, spitting, or smoking for 24 hours. 3. Stick to cool, soft foods and stay hydrated.  If you have severe pain or bleeding that doesn't subside, please reply to this email or call us immediately.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -80
+      ],
+      "id": "b67d9cec-73e3-4e7d-ba1b-2311780b08ad",
+      "name": "Send a message",
+      "webhookId": "b5e81022-2a5a-432a-bc93-90ac713081ec",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KcHbtfmYrllq8ywi",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "franzlyster@gmail.com",
+        "subject": "Thank you for visiting NgeePawn Dental Clinic!",
+        "emailType": "text",
+        "message": "Hi there, we hope your teeth feel clean and fresh after today's appointment!  Would you mind taking 30 seconds to leave us a quick review? It helps our clinic tremendously: ⭐ Leave a Review: test only, test only, test only.  We look forward to seeing you at your next regular check-up!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        112
+      ],
+      "id": "19a1a9fe-aabb-44f7-9e0d-03c41c192f9d",
+      "name": "Send a message1",
+      "webhookId": "e847faef-1e57-41e8-9d33-5a9822475e77",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KcHbtfmYrllq8ywi",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "franzlyster@gmail.com",
+        "subject": "Thank you for choosing NgeePawn Dental Clinic",
+        "emailType": "text",
+        "message": "=Hi there,\n\nThank you for your visit today regarding your {{ $json.summary }}. \n\nIf you have any questions about your treatment or need to schedule a follow-up visit, feel free to reply directly to this email. Have a wonderful rest of your day!",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        304
+      ],
+      "id": "484862bc-59ee-4b94-baf4-62780afab746",
+      "name": "Send a message2",
+      "webhookId": "3908afd4-8afc-4839-b3f9-b393af181687",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KcHbtfmYrllq8ywi",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Manila",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "availableInMCP": false
+  },
+  "versionId": "fbd45bec-ad03-4a29-9877-2a7347e75d86",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d47817c96aac052ed41b97e2a2dc5de26e9e1a3574e54409c0794a096ee01ee2"
+  },
+  "nodeGroups": [],
+  "id": "G4mIRb97KVbuUEaU",
+  "tags": []
+}
