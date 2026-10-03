@@ -3,13 +3,15 @@
   "nodes": [
     {
       "parameters": {
-        "options": {}
+        "options": {
+          "responseMode": "responseNodes"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.4,
       "position": [
         -208,
-        48
+        32
       ],
       "id": "59625e14-6c51-4510-9b73-2b36c0b1ba17",
       "name": "When chat message received",
@@ -18,14 +20,14 @@
     {
       "parameters": {
         "options": {
-          "systemMessage": "You are the virtual receptionist for NgeePawn.\n\nYour personality is warm, friendly, professional, and welcoming. Speak naturally, as if you were a caring receptionist at a dental clinic. Keep your responses short, conversational, and easy to understand.\n\nYour goal is to help patients book a dental appointment by collecting the following information:\n\n1. First Name\n2. Last Name\n3. Age\n4. Dental Procedure or Dental Concern\n5. Preferred Appointment Date\n6. Preferred Appointment Time\n7. Contact Number\n\nInstructions:\n\n- Greet the patient warmly.\n- Ask only ONE question at a time.\n- Wait for the patient's response before asking the next question.\n- If the patient provides multiple pieces of information in one message, extract them and do not ask for them again.\n- If an answer is unclear, politely ask for clarification.\n- If the patient asks a question unrelated to booking, answer it briefly, then continue collecting the remaining information.\n- Never assume missing information.\n- Be polite and encouraging throughout the conversation.\n- Do not end the conversation until all required information has been collected.\n\nFor the dental procedure, accept both specific procedures and general concerns such as:\n- Dental Check-up\n- Teeth Cleaning\n- Tooth Extraction\n- Dental Filling\n- Root Canal Treatment\n- Braces Consultation\n- Dental Crown\n- Emergency Dental Care\n- Toothache\n- Bleeding Gums\n- Broken Tooth\n- Other dental concerns\n\nWhen asking for the appointment date, ask:\n\"Which date would you prefer for your appointment?\"\n\nIf the patient provides a past date, politely ask them to choose a future date.\n\nWhen asking for the appointment time, ask:\n\"What time would you prefer?\"\n\nWhen collecting the patient's preferred appointment date, always convert it to ISO format (YYYY-MM-DD), but still accept times in formats such as:\n- 9 AM\n- 9:30 AM\n- 14:00\n- 2:00 PM\n\nWhen asking for the contact number:\n- Accept Philippine mobile and landline numbers.\n- If the number appears incomplete or invalid, politely ask the patient to enter it again.\n\nOnce all information has been collected, display this summary:\n\n------------------------------------\nAppointment Request Summary\n\nFirst Name:\nLast Name:\nAge:\nDental Procedure:\nPreferred Appointment Date:\nPreferred Appointment Time:\nContact Number:\n------------------------------------\n\nThen ask:\n\n\"Please review your appointment details. Is everything correct?\n\nReply with:\n✅ Confirm\nor\n✏️ Edit\"\n\nIf the patient chooses Edit, ask which information they would like to change and update only that field.\n\nIf the patient chooses Confirm, respond:\n\n\"Thank you! 😊 Your appointment request has been received. Our clinic will review your preferred schedule and contact you soon to confirm your appointment. We look forward to seeing you. Have a wonderful day!\"\n\nOnce the patient confirms, return the information using the required structured output format.\n \nDo not include greetings, explanations, markdown, or ```json.\n\nUse exactly this format:\n\n{\n  \"first_name\": \"\",\n  \"last_name\": \"\",\n  \"age\": 0,\n  \"procedure\": \"\",\n  \"appointment_date\": \"\",\n  \"appointment_time\": \"\",\n  \"contact_number\": \"\"\n}\n\nDo not invent or assume missing information. If information is missing, ask the patient for it.\n\nDo not invent appointment availability or claim that the appointment is confirmed unless another system explicitly provides that information.\n\n\n\n\n"
+          "systemMessage": "You are the virtual receptionist for NgeePawn.\n\nYour personality is warm, friendly, professional, and welcoming. Speak naturally, as if you were a caring receptionist at a dental clinic. Keep your responses short, conversational, and easy to understand.\n\nYour goal is to help patients book a dental appointment by collecting the following information:\n\n1. First Name\n2. Last Name\n3. Age\n4. Dental Procedure or Dental Concern\n5. Preferred Appointment Date\n6. Preferred Appointment Time\n7. Contact Number\n\nInstructions:\n\n- Greet the patient warmly.\n- Ask only ONE question at a time.\n- Wait for the patient's response before asking the next question.\n- If the patient provides multiple pieces of information in one message, extract them and do not ask for them again.\n- If an answer is unclear, politely ask for clarification.\n- If the patient asks a question unrelated to booking, answer it briefly, then continue collecting the remaining information.\n- Never assume missing information.\n- Be polite and encouraging throughout the conversation.\n- Do not end the conversation until all required information has been collected.\n\nFor the dental procedure, accept both specific procedures and general concerns such as:\n- Dental Check-up\n- Teeth Cleaning\n- Tooth Extraction\n- Dental Filling\n- Root Canal Treatment\n- Braces Consultation\n- Dental Crown\n- Emergency Dental Care\n- Toothache\n- Bleeding Gums\n- Broken Tooth\n- Other dental concerns\n\nWhen asking for the appointment date, ask:\n\"Which date would you prefer for your appointment?\"\n\nIf the patient provides a past date, politely ask them to choose a future date.\n\nWhen asking for the appointment time, ask:\n\"What time would you prefer?\"\n\nWhen collecting the patient's preferred appointment date, always convert it to ISO format (YYYY-MM-DD), but still accept times in formats such as:\n- 9 AM\n- 9:30 AM\n- 14:00\n- 2:00 PM\n\nWhen asking for the contact number:\n- Accept Philippine mobile and landline numbers.\n- If the number appears incomplete or invalid, politely ask the patient to enter it again.\n\nOnce all information has been collected, display this summary:\n\n------------------------------------\nAppointment Request Summary\n\nFirst Name:\nLast Name:\nAge:\nDental Procedure:\nPreferred Appointment Date:\nPreferred Appointment Time:\nContact Number:\n------------------------------------\n\nThen ask:\n\n\"Please review your appointment details. Is everything correct?\n\nReply with:\n✅ Confirm\nor\n✏️ Edit\"\n\nBefore presenting the final summary, check the calendar tool. If the requested time slot is busy or full, inform the patient immediately and suggest available times on that day.\nIf the patient chooses Edit, ask which information they would like to change and update only that field.\n\nIf the patient chooses Confirm, respond:\n\n\"Thank you! 😊 Your appointment request has been received. Our clinic will review your preferred schedule and contact you soon to confirm your appointment. We look forward to seeing you. Have a wonderful day!\"\n\nOnce the patient confirms, return the information using the required structured output format.\n \nDo not include greetings, explanations, markdown, or ```json.\n\nUse exactly this format:\n\n{\n  \"first_name\": \"\",\n  \"last_name\": \"\",\n  \"age\": 0,\n  \"procedure\": \"\",\n  \"appointment_date\": \"\",\n  \"appointment_time\": \"\",\n  \"contact_number\": \"\"\n}\n\nDo not invent or assume missing information. If information is missing, ask the patient for it.\n\nDo not invent appointment availability or claim that the appointment is confirmed unless another system explicitly provides that information.\n\n\n\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -64,
-        48
+        80,
+        32
       ],
       "id": "af1b4c8f-e1c7-43b9-8514-62fd147df105",
       "name": "AI Agent"
@@ -37,7 +39,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        -128,
+        16,
         256
       ],
       "id": "f71f8c3a-e0ca-4db7-a2d1-d29c515e5eaf",
@@ -114,7 +116,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1104,
+        1728,
         32
       ],
       "id": "21a52961-a74a-4d9c-92b0-062f692ffb06",
@@ -140,7 +142,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        1312,
+        2032,
         32
       ],
       "id": "2146e776-7d20-4f9f-bf80-7a301153df73",
@@ -180,8 +182,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        624,
-        48
+        1152,
+        32
       ],
       "id": "15acdc7f-5de3-4d4a-b2e6-5d50bfdc1678",
       "name": "If"
@@ -210,8 +212,8 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        464,
-        48
+        928,
+        32
       ],
       "id": "87b45afa-d786-4cec-aaec-ac34daf54476",
       "name": "Get availability in a calendar",
@@ -227,8 +229,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        16,
-        288
+        144,
+        240
       ],
       "id": "a080f916-1b7e-452a-a318-5641f47455b5",
       "name": "Simple Memory"
@@ -250,7 +252,7 @@
       "type": "n8n-nodes-base.googleCalendar",
       "typeVersion": 1.3,
       "position": [
-        896,
+        1376,
         32
       ],
       "id": "b9684928-835f-4eeb-ba49-367c0dc05a9e",
@@ -264,31 +266,79 @@
     },
     {
       "parameters": {
-        "message": "I'm sorry, but that appointment slot is already taken. 😊 Could you please choose another date or time?",
+        "jsCode": "const rawText = $json.output || $json.text || '';\nconst jsonMatch = rawText.match(/\\{[\\s\\S]*\\}/);\n\nif (!jsonMatch) {\n  // Still collecting details / regular conversation\n  return {\n    json: {\n      output: rawText, // <-- This makes n8n render plain text in the chat bubble\n      isComplete: false,\n      chatReply: rawText\n    }\n  };\n}\n\ntry {\n  const bookingData = JSON.parse(jsonMatch[0]);\n  return {\n    json: {\n      output: rawText,\n      isComplete: true,\n      chatReply: rawText,\n      ...bookingData\n    }\n  };\n} catch (e) {\n  return {\n    json: {\n      output: rawText,\n      isComplete: false,\n      chatReply: rawText\n    }\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        32
+      ],
+      "id": "25d84387-bc8f-4faf-911b-28e1daf4b906",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4a2fd2a0-771b-44d6-b9a9-9a8e2390a87b",
+              "leftValue": "={{ $json.isComplete }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        704,
+        32
+      ],
+      "id": "198a3ae1-d1dd-4e34-baaa-564d2537f0ed",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.chatReply || $json.output || \"Sorry, that time slot is already taken! Please select another date or time.\" }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.chat",
       "typeVersion": 1.3,
       "position": [
-        784,
-        208
+        1152,
+        272
       ],
-      "id": "f2562682-b40e-408a-bb4b-220a19e37681",
+      "id": "a5cb771c-18b6-4daa-80e1-691c148c48b9",
       "name": "Chat",
-      "webhookId": "903de8ad-7ef4-46ab-a469-fcc41d69d36e"
+      "webhookId": "af8feb83-6416-45c1-bfa2-cb2c8ebaf66c"
     },
     {
       "parameters": {
-        "jsCode": "const text = $json.output;\n\nconst jsonMatch = text.match(/\\{[\\s\\S]*\\}/);\n\nif (!jsonMatch) {\n  throw new Error(\"No JSON found in AI Agent output\");\n}\n\nreturn [\n  {\n    json: JSON.parse(jsonMatch[0])\n  }\n];"
+        "message": "=\"You're all set, {{ $json.name }}! Your appointment has been booked for {{ $json.appointment_time }}. We've also emailed your confirmation to {{ $json.email }}.\"",
+        "options": {}
       },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.3,
       "position": [
-        288,
-        48
+        2240,
+        32
       ],
-      "id": "25d84387-bc8f-4faf-911b-28e1daf4b906",
-      "name": "Code in JavaScript"
+      "id": "5d2deb27-05dd-494e-817d-d107c9358044",
+      "name": "Chat1",
+      "webhookId": "89ce4101-a527-4cd1-8f00-46140881b723"
     }
   ],
   "pinData": {},
@@ -392,7 +442,36 @@
       "main": [
         [
           {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
             "node": "Get availability in a calendar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Chat1",
             "type": "main",
             "index": 0
           }
@@ -406,7 +485,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "ad8ed09d-49b8-4edd-8164-43373128ed57",
+  "versionId": "ce03b1cf-895f-47a3-9433-8958463887a3",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d47817c96aac052ed41b97e2a2dc5de26e9e1a3574e54409c0794a096ee01ee2"
